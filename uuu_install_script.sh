@@ -7,13 +7,16 @@ SYM_UUU='/usr/local/bin/uuu'
 
 curl -JO "$DEFAULT_URL"/"$LATEST_FILE" && \
 printf "Complete to download: %s \n" "$LATEST_FILE" || printf "Fails to download: %s !!!\n" "$LATEST_FILE"
-
 if [ -d ${DEFAULT_INSTALL_DIR} ] ; then
     read -p "Remove existing uuu binary and directory? y/n : " yn
     case $yn in
-    [Yy]* ) 
-            sudo rm -r "$DEFAULT_INSTALL_DIR";
-            which uuu || sudo rm "$(which uuu)"
+    [Yy]* )
+            EXEC_UUU=$(command -v uuu)
+            if [ ! -z "$EXEC_UUU" ] ; then
+                printf "Removing %s ... \n" "$EXEC_UUU"
+                sudo rm "$EXEC_UUU"
+            fi
+            sudo rm -r "$DEFAULT_INSTALL_DIR"
             ;;
     [Nn]* ) exit;;
     * ) 
