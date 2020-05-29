@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+
+#################################################################################
+# Copyright 2020 Technexion Ltd.
+#
+# Author: Richard Hu <richard.hu@technexion.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#################################################################################
+
+UUU_BIN_DIR="$(dirname "$(readlink -f "$(command -v uuu)")")"
+#/usr/local/share/uuu/imx-mfg-uuu-tool/uuu/linux64
+#Get parent's parent's directory: /usr/local/share/uuu/imx-mfg-uuu-tool
+UUU_ROOT_DIR="$(dirname "$(dirname "$UUU_BIN_DIR")")"
+
+imx6_boards=($(ls "$UUU_ROOT_DIR"/imx6))
+imx6ul_boards=($(ls "$UUU_ROOT_DIR"/imx6ul))
+imx7_boards=($(ls "$UUU_ROOT_DIR"/imx7))
+imx8mm_boards=($(ls "$UUU_ROOT_DIR"/imx8mm))
+imx8mq_boards=($(ls "$UUU_ROOT_DIR"/imx8mq))
+
+execute_uuu_arm32()
+{
+    SPL_BIN=($UUU_ROOT_DIR/$1/$BOARD/*SPL*)
+    UBOOT_BIN=($UUU_ROOT_DIR/$1/$BOARD/*boot*)
+    #echo "${SPL_BIN[@]}" "${UBOOT_BIN[@]}"
+    #echo sudo emmc_$1_img "${SPL_BIN[@]}" "${UBOOT_BIN[@]}" ${IMAGE}
+    if [[ $IMAGE == *.bz2 ]]; then
+        sudo uuu -b emmc_"$1"_img "${SPL_BIN[@]}" "${UBOOT_BIN[@]}" "${IMAGE}"/*
+    else
+        sudo uuu -b emmc_"$1"_img "${SPL_BIN[@]}" "${UBOOT_BIN[@]}" "${IMAGE}"
+    fi
+}
+
+execute_uuu_arm64()
+{
+    FLASH_BIN=($UUU_ROOT_DIR/$1/$BOARD/*flash*)
+    #echo sudo uuu -b emmc_img $UUU_ROOT_DIR/$1/$BOARD/$FLASH_BIN ${IMAGE}
+    if [[ $IMAGE == *.bz2 ]]; then
+        sudo uuu -b emmc_img "${FLASH_BIN[@]}" "${IMAGE}"/*
+    else
+        sudo uuu -b emmc_img "${FLASH_BIN[@]}" "${IMAGE}"
+    fi
+}
+
+flash_image()
+{
+    echo "$BOARD $IMAGE"
+
+    if [ ! -f "$IMAGE" ] ; then
+        printf "Cannot find valid image file !!!"
+        exit
+	fi
+
+    if [[ ${imx6_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm32 "imx6"
+    elif [[ ${imx6ul_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm32 "imx6ul"
+    elif [[ ${imx7_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm32 "imx7"
+    elif [[ ${imx8mm_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm64 "imx8mm"
+    elif [[ ${imx8mq_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm64 "imx8mq"
+    fi
+}
+
+
+list_supported_board()
+{
+    printf 'List supported platform: \n\n'
+    
+    printf 'For imx6:\n'
+    printf '%s\n' "${imx6_boards[@]}"
+    echo
+
+    printf 'For imx6ul:\n'
+    printf '%s\n' "${imx6ul_boards[@]}"
+    echo
+    
+    printf 'For imx6ul:\n'
+    printf '%s\n' "${imx7_boards[@]}"
+    echo
+    
+    printf 'For imx8mm:\n'
+    printf '%s\n' "${imx8mm_boards[@]}"
+    echo
+
+    printf 'For imx8mq:\n'
+    printf '%s\n' "${imx8mq_boards[@]}"
+    echo
+}
+
+usage()
+{
+    echo -e "\nUsage: uuu_tn.sh
+    Optional parameters: [-b board_name] [-i target_image] [-l] [-h]"
+	echo "
+    * This script is used to simplify the usage of uuu to flash target image
+    *
+    * [-b board_name]: specify the name of board/SOM, e.g., pico-imx6
+    * [-i]: target image to be flashed 
+            (also accept image file compressed with .bz2 created by pbzip2)
+    * [-l]: list all supported boards
+    * [-h]: help
+
+    * Usage: List and update supported boards status in existing uuu folder
+    uuu_tn -l
+
+    * Usage: 
+    uuu_tn -b platform -i target_image
+    
+    For example:
+      $ uuu_tn -b pico-imx6 -i target_image
+      $ uuu_tn -b pico-imx8mm -i target_image
+"
+}
+
+if [ $# -eq 0 ]; then
+	usage
+	exit 1
+fi
+
+while getopts "lhb:i:" OPTION
+do
+    case $OPTION in
+        i)
+            IMAGE="$OPTARG"
+            ;;
+        b) 
+            BOARD="$OPTARG"
+            ;;
+        l) 
+            list_supported_board
+            ;;
+        ?|h) 
+            usage
+            exit
+            ;;
+    esac
+done
+
+flash_image
