@@ -10,6 +10,9 @@
 # published by the Free Software Foundation.
 #################################################################################
 
+RED='\033[0;31m'
+GREEN='\033[36m\n'
+NC='\033[0m'
 UUU_BIN_DIR="$(dirname "$(readlink -f "$(command -v uuu)")")"
 #/usr/local/share/uuu/imx-mfg-uuu-tool/uuu/linux64
 #Get parent's parent's directory: /usr/local/share/uuu/imx-mfg-uuu-tool
@@ -67,28 +70,27 @@ flash_image()
     fi
 }
 
-
 list_supported_board()
 {
     printf 'List supported platform: \n\n'
     
-    printf 'For imx6:\n'
+    echo -e $GREEN'For imx6:'$NC
     printf '%s\n' "${imx6_boards[@]}"
     echo
 
-    printf 'For imx6ul:\n'
+    echo -e $GREEN'For imx6ul:'$NC
     printf '%s\n' "${imx6ul_boards[@]}"
     echo
-    
-    printf 'For imx6ul:\n'
+
+    echo -e $GREEN'For imx7:'$NC
     printf '%s\n' "${imx7_boards[@]}"
     echo
-    
-    printf 'For imx8mm:\n'
+
+    echo -e $GREEN'For imx8mm:'$NC
     printf '%s\n' "${imx8mm_boards[@]}"
     echo
 
-    printf 'For imx8mq:\n'
+    echo -e $GREEN'For imx8mq:'$NC
     printf '%s\n' "${imx8mq_boards[@]}"
     echo
 }
@@ -134,6 +136,7 @@ do
             ;;
         l) 
             list_supported_board
+            exit
             ;;
         ?|h) 
             usage
