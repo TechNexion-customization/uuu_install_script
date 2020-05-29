@@ -60,9 +60,10 @@ fi
 printf "Ask for create - %s \n" "$DEFAULT_INSTALL_DIR"
 sudo mkdir -p "$DEFAULT_INSTALL_DIR"  && \
 sudo unzip "$OPTION" -d "$DEFAULT_INSTALL_DIR"
+rm "$OPTION"
 
 ABS_FILE=$(readlink -f "$(find $DEFAULT_INSTALL_DIR -name "uuu" | grep linux64)")
-printf "Create symlink $BIN_PATH/$uuu to %s \n" "$ABS_FILE"
+printf "Create symlink $BIN_PATH/uuu to %s \n" "$ABS_FILE"
 sudo ln -fs "$ABS_FILE" "$BIN_PATH"/uuu
 sudo chmod a+x "$BIN_PATH"/uuu
 
