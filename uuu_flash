@@ -72,7 +72,7 @@ flash_image()
 
 list_supported_board()
 {
-    printf 'List supported platform: \n\n'
+    echo -e $GREEN'List supported platform:'$NC
     
     echo -e $GREEN'For imx6:'$NC
     printf '%s\n' "${imx6_boards[@]}"
