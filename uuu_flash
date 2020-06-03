@@ -13,10 +13,12 @@
 RED='\033[0;31m'
 GREEN='\033[36m\n'
 NC='\033[0m'
-UUU_BIN_DIR="$(dirname "$(readlink -f "$(command -v uuu)")")"
+#UUU_BIN_DIR="$(dirname "$(readlink -f "$(command -v uuu)")")"
+UUU_BIN="/usr/local/share/uuu/imx-mfg-uuu-tool/uuu/linux64/uuu"
 #/usr/local/share/uuu/imx-mfg-uuu-tool/uuu/linux64
 #Get parent's parent's directory: /usr/local/share/uuu/imx-mfg-uuu-tool
-UUU_ROOT_DIR="$(dirname "$(dirname "$UUU_BIN_DIR")")"
+#UUU_ROOT_DIR="$(dirname "$(dirname "$UUU_BIN_DIR")")"
+UUU_ROOT_DIR="/usr/local/share/uuu/imx-mfg-uuu-tool"
 
 imx6_boards=($(ls "$UUU_ROOT_DIR"/imx6))
 imx6ul_boards=($(ls "$UUU_ROOT_DIR"/imx6ul))
@@ -31,9 +33,9 @@ execute_uuu_arm32()
     #echo "${SPL_BIN[@]}" "${UBOOT_BIN[@]}"
     #echo sudo emmc_$1_img "${SPL_BIN[@]}" "${UBOOT_BIN[@]}" ${IMAGE}
     if [[ $IMAGE == *.bz2 ]]; then
-        sudo uuu -b emmc_"$1"_img "${SPL_BIN[@]}" "${UBOOT_BIN[@]}" "${IMAGE}"/*
+        sudo "$UUU_BIN" -b emmc_"$1"_img "${SPL_BIN[@]}" "${UBOOT_BIN[@]}" "${IMAGE}"/*
     else
-        sudo uuu -b emmc_"$1"_img "${SPL_BIN[@]}" "${UBOOT_BIN[@]}" "${IMAGE}"
+        sudo "$UUU_BIN" -b emmc_"$1"_img "${SPL_BIN[@]}" "${UBOOT_BIN[@]}" "${IMAGE}"
     fi
 }
 
@@ -42,9 +44,9 @@ execute_uuu_arm64()
     FLASH_BIN=($UUU_ROOT_DIR/$1/$BOARD/*flash*)
     #echo sudo uuu -b emmc_img $UUU_ROOT_DIR/$1/$BOARD/$FLASH_BIN ${IMAGE}
     if [[ $IMAGE == *.bz2 ]]; then
-        sudo uuu -b emmc_img "${FLASH_BIN[@]}" "${IMAGE}"/*
+        sudo "$UUU_BIN" -b emmc_img "${FLASH_BIN[@]}" "${IMAGE}"/*
     else
-        sudo uuu -b emmc_img "${FLASH_BIN[@]}" "${IMAGE}"
+        sudo "$UUU_BIN" -b emmc_img "${FLASH_BIN[@]}" "${IMAGE}"
     fi
 }
 
