@@ -99,26 +99,26 @@ list_supported_board()
 
 usage()
 {
-    echo -e "\nUsage: uuu_tn.sh
+    echo -e "\nUsage: uuu_flash.sh
     Optional parameters: [-b board_name] [-i target_image] [-l] [-h]"
 	echo "
     * This script is used to simplify the usage of uuu to flash target image
     *
     * [-b board_name]: specify the name of board/SOM, e.g., pico-imx6
-    * [-i]: target image to be flashed 
+    * [-i]: target image to be flashed
             (also accept image file compressed with .bz2 created by pbzip2)
     * [-l]: list all supported boards
     * [-h]: help
 
     * Usage: List and update supported boards status in existing uuu folder
-    uuu_tn -l
+    uuu_flash -l
 
-    * Usage: 
-    uuu_tn -b platform -i target_image
-    
+    * Usage:
+    uuu_flash -b platform -i target_image
+
     For example:
-      $ uuu_tn -b pico-imx6 -i target_image
-      $ uuu_tn -b pico-imx8mm -i target_image
+      $ uuu_flash -b pico-imx6 -i target_image
+      $ uuu_flash -b pico-imx8mm -i target_image
 "
 }
 
