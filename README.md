@@ -3,7 +3,7 @@ Install i.mx uuu (mfgtool 3.0) in the host OS and simplify the usage of uuu for 
 
 # Steps
 ## Download and install `uuu` tool
-    tn@ubuntu:~$ bash <(wget -qO- https://raw.githubusercontent.com/richard-hu/uuu_install_script/master/uuu_install_script.sh)
+    tn@ubuntu:~$ bash <(wget -qO- https://raw.githubusercontent.com/TechNexion-customization/uuu_install_script/master/uuu_install_script.sh)
     
 ## Flash image via `uuu_tn` command
     tn@ubuntu:~$ uuu_tn -b pico-imx8mm -i target_image
