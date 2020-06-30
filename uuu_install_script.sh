@@ -12,7 +12,7 @@
 
 DEFAULT_INSTALL_DIR='/usr/local/share/uuu'
 UUU_ZIP_URL='ftp://ftp.technexion.net/development_resources/development_tools/installer/'
-UUU_FLASH_SCRIPT='https://raw.githubusercontent.com/richard-hu/uuu_install_script/master/uuu_flash'
+UUU_FLASH_SCRIPT='https://raw.githubusercontent.com/TechNexion-customization/uuu_install_script/master/uuu_flash'
 UUU_FLASH_EXE='uuu_flash'
 #LATEST_FILE=$(curl -sl $UUU_ZIP_URL | grep imx-mfg-uuu | sort | tail -n1)
 
