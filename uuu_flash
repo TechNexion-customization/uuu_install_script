@@ -25,6 +25,8 @@ imx6ul_boards=($(ls "$UUU_ROOT_DIR"/imx6ul))
 imx7_boards=($(ls "$UUU_ROOT_DIR"/imx7))
 imx8mm_boards=($(ls "$UUU_ROOT_DIR"/imx8mm))
 imx8mq_boards=($(ls "$UUU_ROOT_DIR"/imx8mq))
+imx8mn_boards=($(ls "$UUU_ROOT_DIR"/imx8mn))
+imx8mp_boards=($(ls "$UUU_ROOT_DIR"/imx8mp))
 
 execute_uuu_arm32()
 {
@@ -69,6 +71,10 @@ flash_image()
         execute_uuu_arm64 "imx8mm"
     elif [[ ${imx8mq_boards[@]} =~ ${BOARD} ]]; then
         execute_uuu_arm64 "imx8mq"
+    elif [[ ${imx8mn_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm64 "imx8mn"
+    elif [[ ${imx8mp_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm64 "imx8mp"
     fi
 }
 
@@ -94,6 +100,14 @@ list_supported_board()
 
     echo -e $GREEN'For imx8mq:'$NC
     printf '%s\n' "${imx8mq_boards[@]}"
+    echo
+
+    echo -e $GREEN'For imx8mn:'$NC
+    printf '%s\n' "${imx8mn_boards[@]}"
+    echo
+
+    echo -e $GREEN'For imx8mp:'$NC
+    printf '%s\n' "${imx8mp_boards[@]}"
     echo
 }
 
