@@ -27,6 +27,8 @@ imx8mm_boards=($(ls "$UUU_ROOT_DIR"/imx8mm))
 imx8mq_boards=($(ls "$UUU_ROOT_DIR"/imx8mq))
 imx8mn_boards=($(ls "$UUU_ROOT_DIR"/imx8mn))
 imx8mp_boards=($(ls "$UUU_ROOT_DIR"/imx8mp))
+imx93_boards=($(ls "$UUU_ROOT_DIR"/imx93))
+imx91_boards=($(ls "$UUU_ROOT_DIR"/imx91))
 
 execute_uuu_arm32()
 {
@@ -59,7 +61,7 @@ flash_image()
     if [ ! -f "$IMAGE" ] ; then
         printf "Cannot find valid image file !!!"
         exit
-	fi
+    fi
 
     if [[ ${imx6_boards[@]} =~ ${BOARD} ]]; then
         execute_uuu_arm32 "imx6"
@@ -75,6 +77,10 @@ flash_image()
         execute_uuu_arm64 "imx8mn"
     elif [[ ${imx8mp_boards[@]} =~ ${BOARD} ]]; then
         execute_uuu_arm64 "imx8mp"
+    elif [[ ${imx93_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm64 "imx93"
+    elif [[ ${imx91_boards[@]} =~ ${BOARD} ]]; then
+        execute_uuu_arm64 "imx91"
     fi
 }
 
@@ -108,6 +114,14 @@ list_supported_board()
 
     echo -e $GREEN'For imx8mp:'$NC
     printf '%s\n' "${imx8mp_boards[@]}"
+    echo
+
+    echo -e $GREEN'For imx93:'$NC
+    printf '%s\n' "${imx93_boards[@]}"
+    echo
+
+    echo -e $GREEN'For imx91:'$NC
+    printf '%s\n' "${imx91_boards[@]}"
     echo
 }
 
